@@ -11,19 +11,18 @@ const {createReview,updatereview,deleteReviwsById} = require("../controllers/rev
 
 router.post("/register",createUser)
 router.post("/login",loginData)
-router.post("/books",validation,createBook)
-router.post("/books/:bookId/review",validation,createReview)//----
+router.post("/books",validation,Authenticate,Authorization,createBook)
+router.post("/books/:bookId/review",validation,createReview)
 
-router.get("/books",getbooks)
-router.get("/books/:bookId",validation,bookbyid)
+router.get("/books",Authenticate,getbooks)
+router.get("/books/:bookId",Authenticate,validation,bookbyid)
 
-router.put("/books/:bookId",validation,Updatebook)//----
+router.put("/books/:bookId",Authenticate,validation,Authorization,Updatebook)
 router.put("/books/:bookId/review/:reviewId",validation,updatereview)
 
 
-router.delete("/books/:bookId",validation,deletebyId)//-----
+router.delete("/books/:bookId",validation,Authenticate,Authorization,deletebyId)
 router.delete("/books/:bookId/review/:reviewId",validation,deleteReviwsById)
-
 
 
 aws.config.update({
@@ -51,7 +50,7 @@ let uploadFile= async ( file) =>{
          return resolve(data.Location)
      })
     })
- }
+}
 
  router.post("/write-file-aws", async function(req, res){
     try{
